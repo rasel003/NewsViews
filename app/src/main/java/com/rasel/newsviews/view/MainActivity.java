@@ -1,14 +1,19 @@
-package com.rasel.newsviews;
+package com.rasel.newsviews.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
+import com.rasel.newsviews.adapter.ExpandableListAdapter;
+import com.rasel.newsviews.model.ExpandedMenuModel;
+import com.rasel.newsviews.R;
 import com.rasel.newsviews.adapter.GoogleNewsAdapter;
 import com.rasel.newsviews.api.RetrofitClient;
 import com.rasel.newsviews.model.Articles;
@@ -36,12 +41,13 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     private DrawerLayout mDrawerLayout;
 
-    ExpandableListAdapter mMenuAdapter;
-    ExpandableListView expandableList;
-    List<ExpandedMenuModel> listDataHeader;
-    HashMap<ExpandedMenuModel, List<String>> listDataChild;
+    private ExpandableListAdapter mMenuAdapter;
+    private ExpandableListView expandableList;
+    private List<ExpandedMenuModel> listDataHeader;
+    private HashMap<ExpandedMenuModel, List<String>> listDataChild;
 
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        progressBar = findViewById(R.id.progressBar);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -73,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         expandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                //Log.d("DEBUG", "submenu item clicked");
-                Toast.makeText(MainActivity.this, "Submenu item clicked", Toast.LENGTH_SHORT).show();
+                Log.d("DEBUG", "submenu item clicked");
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 return true;
             }
         });
@@ -117,13 +125,9 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         // Adding child data
         List<String> heading1 = new ArrayList<String>();
-        heading1.add("HOME 1");
-        heading1.add("HOME 2");
-        heading1.add("HOME 3");
-        heading1.add("HOME 4");
-        heading1.add("HOME 5");
+        heading1.add("Login Using Facebook");
 
-        listDataChild.put(listDataHeader.get(0), heading1);// Header, Child data
+        listDataChild.put(listDataHeader.get(1), heading1);// Header, Child data
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -170,11 +174,13 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     private void getNewFromGoogle() {
 
-        Call<GoogleNewsResponse> call = RetrofitClient.getInstance().getApi().getNews();
+        Call<GoogleNewsResponse> call = RetrofitClient.getInstance().getApi().getNews("google-news","cc39eb8a0bf94781933a765ee91dd8a5");
 
         call.enqueue(new Callback<GoogleNewsResponse>() {
             @Override
             public void onResponse(Call<GoogleNewsResponse> call, Response<GoogleNewsResponse> response) {
+                progressBar.setVisibility(View.GONE);
+
                 if (!response.isSuccessful()) {
                     Log.d(TAG, "onResponse: Code: " + response.code());
                     return;
@@ -199,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
             @Override
             public void onFailure(Call<GoogleNewsResponse> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Log.d(TAG, "onFailure: Google News Response" + t.getMessage());
             }
         });

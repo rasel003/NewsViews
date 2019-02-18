@@ -1,4 +1,6 @@
-package com.rasel.newsviews;
+package com.rasel.newsviews.view;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,18 +8,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.rasel.newsviews.R;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreenThree extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-
-        ImageView imageView = findViewById(R.id.splash_imageView);
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.splash_animation);
-        imageView.startAnimation(animation);
+        setContentView(R.layout.activity_splash_screen_three);
 
         Thread thread = new Thread(){
             @Override
@@ -27,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }finally {
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }
             }

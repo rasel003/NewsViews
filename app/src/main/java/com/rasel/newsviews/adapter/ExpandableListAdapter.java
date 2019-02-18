@@ -1,4 +1,4 @@
-package com.rasel.newsviews;
+package com.rasel.newsviews.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -10,6 +10,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.rasel.newsviews.model.ExpandedMenuModel;
+import com.rasel.newsviews.R;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +42,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         int childCount = 0;
-        if (groupPosition <1) {
+        if (groupPosition ==1) {
             childCount = this.mListDataChild.get(this.mListDataHeader.get(groupPosition)).size();
         }
         return childCount;

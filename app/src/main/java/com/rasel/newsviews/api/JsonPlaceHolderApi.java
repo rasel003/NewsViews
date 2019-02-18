@@ -11,7 +11,10 @@ import retrofit2.http.Query;
 
 public interface JsonPlaceHolderApi {
 
-    @GET("top-headlines?sources=google-news&apiKey=cc39eb8a0bf94781933a765ee91dd8a5")
-    Call<GoogleNewsResponse> getNews();
+    @GET("top-headlines")
+    Call<GoogleNewsResponse> getNews(
+            @Query("sources") String source,
+            @Query("apiKey") String apiKey
+    );
 
 }

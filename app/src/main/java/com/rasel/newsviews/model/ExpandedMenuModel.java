@@ -1,4 +1,4 @@
-package com.rasel.newsviews;
+package com.rasel.newsviews.model;
 
 public class ExpandedMenuModel {
 
