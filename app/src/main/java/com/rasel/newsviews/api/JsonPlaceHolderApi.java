@@ -2,8 +2,7 @@ package com.rasel.newsviews.api;
 
 import com.rasel.newsviews.model.GoogleNewsResponse;
 
-import java.util.List;
-
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -17,4 +16,6 @@ public interface JsonPlaceHolderApi {
             @Query("apiKey") String apiKey
     );
 
+    @GET("{number}/date")
+    Call<ResponseBody> getNumberText(@Path("number") String number);
 }

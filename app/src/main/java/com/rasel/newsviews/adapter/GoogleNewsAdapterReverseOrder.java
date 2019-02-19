@@ -15,11 +15,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class GoogleNewsAdapter extends RecyclerView.Adapter<GoogleNewsAdapter.ViewHolder>{
+public class GoogleNewsAdapterReverseOrder extends RecyclerView.Adapter<GoogleNewsAdapterReverseOrder.ViewHolder>{
 
     private List<Articles> articlesList;
 
-    public GoogleNewsAdapter(List<Articles> articlesList) {
+    public GoogleNewsAdapterReverseOrder(List<Articles> articlesList) {
         this.articlesList = articlesList;
     }
 
@@ -33,11 +33,13 @@ public class GoogleNewsAdapter extends RecyclerView.Adapter<GoogleNewsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.tvNewsTitle.setText(articlesList.get(position).getTitle());
-        holder.tvNewsAuthor.setText(articlesList.get(position).getAuthor());
-        holder.tvNewsTime.setText(articlesList.get(position).getPublishedAt());
+        int showItem = articlesList.size() -(position+1);
 
-        String profilepicLink = articlesList.get(position).getUrlToImage();
+        holder.tvNewsTitle.setText(articlesList.get(showItem).getTitle());
+        holder.tvNewsAuthor.setText(articlesList.get(showItem).getAuthor());
+        holder.tvNewsTime.setText(articlesList.get(showItem).getPublishedAt());
+
+        String profilepicLink = articlesList.get(showItem).getUrlToImage();
 
             Picasso.get().load(profilepicLink)
                     .fit().centerCrop()

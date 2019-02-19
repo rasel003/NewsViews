@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">NewsViews</string>
     <string name="app_icon">app icon</string>
-    <string name="nav_header_title">header title</string>
-    <string name="nav_header_subtitle">header sub title</string>
+    <string name="nav_header_title">Username </string>
+    <string name="nav_header_subtitle">user@gmail.com</string>
     <string name="nav_header_desc">description of header</string>
     <string name="navigation_drawer_open">navigation drawer open</string>
     <string name="navigation_drawer_close">navigation drawer close</string>
