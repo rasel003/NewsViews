@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class GoogleNewsAdapterReverseOrder extends RecyclerView.Adapter<GoogleNewsAdapterReverseOrder.ViewHolder>{
 
+    private OnItemClickListener listener;
     private List<Articles> articlesList;
 
     public GoogleNewsAdapterReverseOrder(List<Articles> articlesList) {
@@ -59,8 +60,24 @@ public class GoogleNewsAdapterReverseOrder extends RecyclerView.Adapter<GoogleNe
             super(itemView);
             imgNewsPicture = itemView.findViewById(R.id.imgNewsPicture);
             tvNewsTitle = itemView.findViewById(R.id.tvNewsTitle);
-            tvNewsAuthor = itemView.findViewById(R.id.tvNewsAuthor);
+            tvNewsAuthor = itemView.findViewById(R.id.tvNewsAuthorValue);
             tvNewsTime = itemView.findViewById(R.id.tvNewsTime);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = articlesList.size() -(getAdapterPosition()+1);
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(articlesList.get(position));
+                    }
+                }
+            });
         }
+    }
+    public interface OnItemClickListener {
+        void onItemClick(Articles articles);
+    }
+
+    public void setOnItemClickListener(GoogleNewsAdapterReverseOrder.OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

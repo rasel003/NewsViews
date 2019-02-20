@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -58,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private HashMap<ExpandedMenuModel, List<String>> listDataChild;
 
     private RecyclerView recyclerView, recyclerViewTwo;
-    private ProgressBar progressBar, progressBarTwo;
+    private ProgressBar progressBar;
+    private TextView tvTitleGoogleNews, tvTitleGoogleNewsTwo, tvNoDataFound, tvNoDataFoundTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,11 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         setSupportActionBar(toolbar);
 
         progressBar = findViewById(R.id.progressBar);
-        progressBarTwo = findViewById(R.id.progressBarTwo);
+
+        tvTitleGoogleNews = findViewById(R.id.tvTitleGoogleNews);
+        tvTitleGoogleNewsTwo = findViewById(R.id.tvTitleGoogleNewsTwo);
+        tvNoDataFound = findViewById(R.id.tvNoDataFound);
+        tvNoDataFoundTwo = findViewById(R.id.tvNoDataFoundTwo);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -248,7 +254,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             @Override
             public void onResponse(Call<GoogleNewsResponse> call, Response<GoogleNewsResponse> response) {
                 progressBar.setVisibility(View.GONE);
-                progressBarTwo.setVisibility(View.GONE);
+                tvTitleGoogleNews.setVisibility(View.VISIBLE);
+                tvTitleGoogleNewsTwo.setVisibility(View.VISIBLE);
 
                 if (!response.isSuccessful()) {
                     Log.d(TAG, "onResponse: Code: " + response.code());
@@ -262,8 +269,25 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     GoogleNewsAdapter googleNewsAdapter = new GoogleNewsAdapter(articlesList);
                     recyclerView.setAdapter(googleNewsAdapter);
 
+                    googleNewsAdapter.setOnItemClickListener(new GoogleNewsAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Articles articles) {
+                            Intent intent = new Intent(MainActivity.this, NewsDetails.class);
+                            intent.putExtra("article", articles);
+                            startActivity(intent);
+                        }
+                    });
+
                     GoogleNewsAdapterReverseOrder reverseOrder = new GoogleNewsAdapterReverseOrder(articlesList);
                     recyclerViewTwo.setAdapter(reverseOrder);
+                    reverseOrder.setOnItemClickListener(new GoogleNewsAdapterReverseOrder.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Articles articles) {
+                            Intent intent = new Intent(MainActivity.this, NewsDetails.class);
+                            intent.putExtra("article", articles);
+                            startActivity(intent);
+                        }
+                    });
 
                 } else {
                     if (googleNewsResponse != null) {
@@ -277,7 +301,10 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             @Override
             public void onFailure(Call<GoogleNewsResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                progressBarTwo.setVisibility(View.GONE);
+                tvTitleGoogleNews.setVisibility(View.VISIBLE);
+                tvTitleGoogleNewsTwo.setVisibility(View.VISIBLE);
+                tvNoDataFound.setVisibility(View.VISIBLE);
+                tvNoDataFoundTwo.setVisibility(View.VISIBLE);
                 Log.d(TAG, "onFailure: Google News Response" + t.getMessage());
             }
         });

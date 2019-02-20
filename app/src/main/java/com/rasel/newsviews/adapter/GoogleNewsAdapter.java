@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class GoogleNewsAdapter extends RecyclerView.Adapter<GoogleNewsAdapter.ViewHolder>{
-
+    private OnItemClickListener listener;
     private List<Articles> articlesList;
 
     public GoogleNewsAdapter(List<Articles> articlesList) {
@@ -57,8 +57,25 @@ public class GoogleNewsAdapter extends RecyclerView.Adapter<GoogleNewsAdapter.Vi
             super(itemView);
             imgNewsPicture = itemView.findViewById(R.id.imgNewsPicture);
             tvNewsTitle = itemView.findViewById(R.id.tvNewsTitle);
-            tvNewsAuthor = itemView.findViewById(R.id.tvNewsAuthor);
+            tvNewsAuthor = itemView.findViewById(R.id.tvNewsAuthorValue);
             tvNewsTime = itemView.findViewById(R.id.tvNewsTime);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(articlesList.get(position));
+                    }
+                }
+            });
         }
+    }
+    public interface OnItemClickListener {
+        void onItemClick(Articles articles);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }
