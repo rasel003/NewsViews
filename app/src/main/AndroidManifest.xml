@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.NewsPaper"></activity>
+        <activity android:name=".view.NewsPaper" />
         <activity
             android:name=".view.NewsDetails"
             android:configChanges="orientation"
@@ -51,11 +51,13 @@
             android:name=".view.SplashScreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <meta-data

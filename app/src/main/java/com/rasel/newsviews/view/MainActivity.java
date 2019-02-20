@@ -2,8 +2,6 @@ package com.rasel.newsviews.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,18 +15,15 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-import com.rasel.newsviews.adapter.ExpandableListAdapter;
-import com.rasel.newsviews.adapter.GoogleNewsAdapterReverseOrder;
-import com.rasel.newsviews.api.RetrofitClient_Number;
-import com.rasel.newsviews.model.ExpandedMenuModel;
 import com.rasel.newsviews.R;
+import com.rasel.newsviews.adapter.ExpandableListAdapter;
 import com.rasel.newsviews.adapter.GoogleNewsAdapter;
+import com.rasel.newsviews.adapter.GoogleNewsAdapterReverseOrder;
 import com.rasel.newsviews.api.RetrofitClient;
 import com.rasel.newsviews.model.Articles;
+import com.rasel.newsviews.model.ExpandedMenuModel;
 import com.rasel.newsviews.model.GoogleNewsResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,22 +32,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "rasel";
 
     private DrawerLayout mDrawerLayout;
 
@@ -114,13 +106,16 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         expandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                //Log.d("DEBUG", "heading clicked");
+                Log.d(TAG, "Group clicked");
                 switch (i) {
                     case 2:
                         startActivity(new Intent(MainActivity.this, VersionActivity.class));
+                        break;
+                    case 3:
+                        finish();
+                        System.exit(0);
+                        break;
                 }
-                Toast.makeText(MainActivity.this, "Group clicked--", Toast.LENGTH_SHORT).show();
-
                 return false;
             }
         });
@@ -138,23 +133,23 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         ExpandedMenuModel item2 = new ExpandedMenuModel();
         item2.setIconName("LOG IN");
-        item2.setIconImg(R.drawable.ic_home);
+        item2.setIconImg(R.drawable.ic_login);
         listDataHeader.add(item2);
 
         ExpandedMenuModel item3 = new ExpandedMenuModel();
         item3.setIconName("ABOUT");
-        item3.setIconImg(R.drawable.ic_home);
+        item3.setIconImg(R.drawable.about);
         listDataHeader.add(item3);
 
         ExpandedMenuModel item4 = new ExpandedMenuModel();
         item4.setIconName("EXIT");
-        item4.setIconImg(R.drawable.ic_home);
+        item4.setIconImg(R.drawable.ic_power_settings_new_black_24dp);
         listDataHeader.add(item4);
 
 
         // Adding child data
         List<String> heading1 = new ArrayList<String>();
-        heading1.add("Login Facebook");
+        heading1.add("Facebook");
 
         listDataChild.put(listDataHeader.get(1), heading1);// Header, Child data
     }

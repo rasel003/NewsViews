@@ -24,7 +24,7 @@ public class NewsPaper extends AppCompatActivity {
 
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Forgot Password");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("News");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
