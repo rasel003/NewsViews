@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".view.NewsDetails"
+        <activity android:name=".view.NewsPaper"></activity>
+        <activity
+            android:name=".view.NewsDetails"
             android:configChanges="orientation"
             android:parentActivityName=".view.MainActivity"
             android:screenOrientation="portrait" />
@@ -45,7 +46,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".view.SplashScreen"

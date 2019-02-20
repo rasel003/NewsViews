@@ -1,8 +1,10 @@
 package com.rasel.newsviews.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +35,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -271,10 +274,28 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
                     googleNewsAdapter.setOnItemClickListener(new GoogleNewsAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(Articles articles) {
-                            Intent intent = new Intent(MainActivity.this, NewsDetails.class);
-                            intent.putExtra("article", articles);
-                            startActivity(intent);
+                        public void onItemClick(final Articles article) {
+
+                            if(article.getUrl() != null && !article.getUrl().trim().isEmpty()) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setTitle("Select Browser ?")
+                                        .setMessage("Load content in a browser")
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl())));
+                                            }
+                                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(getApplicationContext(), NewsPaper.class);
+                                        intent.putExtra("url", article.getUrl());
+                                        startActivity(intent);
+                                    }
+                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
                         }
                     });
 
@@ -282,10 +303,27 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     recyclerViewTwo.setAdapter(reverseOrder);
                     reverseOrder.setOnItemClickListener(new GoogleNewsAdapterReverseOrder.OnItemClickListener() {
                         @Override
-                        public void onItemClick(Articles articles) {
-                            Intent intent = new Intent(MainActivity.this, NewsDetails.class);
-                            intent.putExtra("article", articles);
-                            startActivity(intent);
+                        public void onItemClick(final Articles article) {
+                            if(article.getUrl() != null && !article.getUrl().trim().isEmpty()) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setTitle("Select Browser ?")
+                                        .setMessage("Load content in a browser")
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl())));
+                                            }
+                                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(getApplicationContext(), NewsPaper.class);
+                                        intent.putExtra("url", article.getUrl());
+                                        startActivity(intent);
+                                    }
+                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                            }
                         }
                     });
 
