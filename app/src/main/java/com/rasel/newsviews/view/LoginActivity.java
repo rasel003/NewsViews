@@ -109,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     Picasso.get().load(image_url.trim())
                             .error( R.drawable.ic_person_black_24dp )
-                            .placeholder( R.drawable.progress_animation )
                             .into(circleImageView);
 
 
