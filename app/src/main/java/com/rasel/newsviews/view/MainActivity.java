@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private HashMap<ExpandedMenuModel, List<String>> listDataChild;
 
     private RecyclerView recyclerView, recyclerViewTwo;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar, progressBarTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         setSupportActionBar(toolbar);
 
         progressBar = findViewById(R.id.progressBar);
+        progressBarTwo = findViewById(R.id.progressBarTwo);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -191,7 +192,14 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                getTextForNumber(query);
+                if(!query.trim().isEmpty() && query.trim().matches("^[0-9]*$")){
+                    Intent intent = new Intent(MainActivity.this, NumberText.class);
+                    intent.putExtra("number", query);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(MainActivity.this, "Input is not valid", Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
             }
 
@@ -222,40 +230,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         return true;
     }
 
-    private void getTextForNumber(final String query) {
-        Call<ResponseBody> call = RetrofitClient_Number.getInstance().getApi().getNumberText(query);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (!response.isSuccessful()) {
-                    Log.d(TAG, "Number Api onResponse: Code: " + response.code());
-                    return;
-                }
-                try {
-                    if(response.body() != null) {
-                        String result = response.body().string();
-                        Log.d(TAG, "onResponse: Number return result : --" + result);
-
-                        Intent intent = new Intent(MainActivity.this, NumberText.class);
-                        intent.putExtra("result", result);
-                        intent.putExtra("number", query);
-                        startActivity(intent);
-                    }else{
-                        Log.d(TAG, "onResponse: Number api response is null");
-                    }
-                }catch (IOException e){
-                    Log.d(TAG, "onResponse: Exception Occurred in uploading Profile Image" + e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d(TAG, "onFailure: Google News Response" + t.getMessage());
-            }
-        });
-
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -274,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             @Override
             public void onResponse(Call<GoogleNewsResponse> call, Response<GoogleNewsResponse> response) {
                 progressBar.setVisibility(View.GONE);
+                progressBarTwo.setVisibility(View.GONE);
 
                 if (!response.isSuccessful()) {
                     Log.d(TAG, "onResponse: Code: " + response.code());
@@ -302,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             @Override
             public void onFailure(Call<GoogleNewsResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                progressBarTwo.setVisibility(View.GONE);
                 Log.d(TAG, "onFailure: Google News Response" + t.getMessage());
             }
         });

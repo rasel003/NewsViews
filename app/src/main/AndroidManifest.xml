@@ -14,6 +14,7 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".view.NumberText"
+            android:parentActivityName=".view.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
 
